@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:outlineAmbientShadowColor="#03A9F4"
+    android:outlineSpotShadowColor="#03A9F4"
+    tools:context=".Main">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="61dp"
+        tools:layout_editor_absoluteY="0dp">
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="331dp"
+            app:srcCompat="@drawable/screenshot_2024_04_11_145821" />
+
+        <TextView
+            android:id="@+id/Registerpg"
+            android:layout_width="match_parent"
+            android:layout_height="29dp"
+            android:layout_marginBottom="-5dp"
+            android:gravity="center"
+            android:text="@string/Rregister"
+            android:textSize="20sp"
+            android:textStyle="bold|italic" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/usernameTil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/borders"
+                android:drawableStart="@drawable/icons8_homer_simpson"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/Rusername"
+                android:inputType="textPersonName"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailTil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="354dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/borders"
+                android:drawableStart="@drawable/baseline_attach_email_24"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/PasswordTil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="20"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/Password"
+                android:layout_width="354dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="-10dp"
+                android:background="@drawable/borders"
+                android:drawableStart="@drawable/baseline_enhanced_encryption_24"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="@string/rpassword"
+                android:inputType="textPassword"
+                android:paddingHorizontal="8dp"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/rRegister"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/Rrregister"
+            android:layout_marginStart="130dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already Registered? "
+                android:textColor="@color/baby_blue"
+                android:textSize="15dp"
+                android:layout_marginStart="120dp"/>
+            <TextView
+                android:id="@+id/login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Click here"
+                android:textStyle="bold"
+                android:textColor="@color/baby_blue"
+                android:textSize="16dp"
+                 />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
