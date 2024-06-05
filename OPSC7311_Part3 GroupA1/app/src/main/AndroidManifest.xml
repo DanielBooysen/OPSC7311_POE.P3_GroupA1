@@ -14,42 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OPSC7311_Part2_GroupA"
         tools:targetApi="31">
+
+        <!-- Main activity which launches the app -->
         <activity
-            android:name=".total_hours"
-            android:exported="false" />
-        <activity
-            android:name=".activity_total_hours"
-            android:exported="false" />
-        <activity
-            android:name=".item_total_hours"
-            android:exported="false" />
-        <activity
-            android:name=".List_view"
-            android:exported="false" />
-        <activity
-            android:name=".Total_hours"
-            android:exported="true" />
-        <activity
-            android:name=".Goal"
-            android:exported="true" />
-        <activity
-            android:name=".Time_entry"
-            android:exported="true" />
-        <activity
-            android:name=".Homepage"
-            android:exported="true" />
-        <activity
-            android:name=".Login"
-            android:exported="true" />
-        <activity
-            android:name=".Main"
+            android:name=".Register"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <!-- Other activities in the application -->
+        <activity android:name=".TotalHours" android:exported="false" />
+        <activity android:name=".ListView" android:exported="false" />
+        <activity android:name=".TimeSheetEntry" android:exported="false" />
+        <activity android:name=".Goal" android:exported="true" />
+        <activity android:name=".TimeEntry" android:exported="true" />
+        <activity android:name=".Homepage" android:exported="true" />
+        <activity android:name=".Login" android:exported="true" />
+
+    </application>
 </manifest>

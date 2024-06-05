@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.opsc7311_part2_groupa.databinding.ActivityMainBinding
 
 
-class Main : AppCompatActivity() {
+class Register : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +37,12 @@ class Main : AppCompatActivity() {
                     binding.username.text.clear()
                     binding.email.text.clear()
                     binding.Password.text.clear()
+                    val intent = Intent(this,Homepage::class.java)
+                    startActivity(intent)
                 }else{
                     val ad = AlertDialog.Builder(this)
                     ad.setTitle("Message")
-                    ad.setMessage("User not registered")
+                    ad.setMessage("An error ocurred: User not registered")
                     ad.setPositiveButton("Ok", null)
                     ad.show()
                     binding.username.text.clear()

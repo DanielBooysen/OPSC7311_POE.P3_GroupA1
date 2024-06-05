@@ -14,7 +14,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class activity_total_hours : AppCompatActivity() {
+class TotalHours : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -57,7 +57,7 @@ class activity_total_hours : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item13 -> {
-                startActivity(Intent(this, Time_entry::class.java))
+                startActivity(Intent(this, TimeEntry::class.java))
                 return true
             }
 

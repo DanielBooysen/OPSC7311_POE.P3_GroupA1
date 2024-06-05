@@ -7,12 +7,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ListView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class List_view : AppCompatActivity() {
+class ListView : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,12 +68,12 @@ class List_view : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item1 -> {
-                startActivity(Intent(this, Time_entry::class.java))
+                startActivity(Intent(this, TimeEntry::class.java))
                 return true
             }
 
             R.id.menu_item2 -> {
-                startActivity(Intent(this,activity_total_hours::class.java))
+                startActivity(Intent(this,TotalHours::class.java))
                 return true
             }
 
@@ -94,7 +93,7 @@ class List_view : AppCompatActivity() {
             }
 
             R.id.menu_item6 -> {
-                startActivity(Intent(this, List_view::class.java))
+                startActivity(Intent(this, ListView::class.java))
                 return true
             }
 

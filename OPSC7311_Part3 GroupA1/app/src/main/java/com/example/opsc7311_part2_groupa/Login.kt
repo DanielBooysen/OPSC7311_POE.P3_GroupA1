@@ -36,7 +36,7 @@ class Login : AppCompatActivity() {
             }
         }
         bind.regisLink.setOnClickListener {
-            val intent = Intent(this, Main::class.java)
+            val intent = Intent(this, Register::class.java)
             startActivity(intent)
         }
     }

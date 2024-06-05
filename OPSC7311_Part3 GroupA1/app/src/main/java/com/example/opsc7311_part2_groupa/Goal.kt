@@ -4,12 +4,10 @@ import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.EditText
 import android.widget.Toast
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import androidx.appcompat.widget.Toolbar
 import com.example.opsc7311_part2_groupa.databinding.ActivityGoalBinding
 import com.example.opsc7311_part2_groupa.DBClass.Companion.DATE_GOAL
@@ -97,7 +95,7 @@ class Goal : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_item5 -> {
-                startActivity(Intent(this, Time_entry::class.java))
+                startActivity(Intent(this, TimeEntry::class.java))
                 return true
             }
             R.id.menu_item6 -> {
