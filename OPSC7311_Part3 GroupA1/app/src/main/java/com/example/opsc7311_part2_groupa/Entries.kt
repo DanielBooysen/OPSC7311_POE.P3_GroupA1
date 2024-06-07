@@ -7,32 +7,26 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ListView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class ListView : AppCompatActivity() {
+class Entries : AppCompatActivity() {
+    val db = DBClass(applicationContext).readableDatabase
     @SuppressLint("MissingInflatedId")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_view)
+        setContentView(R.layout.activity_entries)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        val entries = getTimesheetEntriesFromDatabase()
 
-        // Create dummy entries list
-        val dummyEntriesList = listOf(
-            TimeSheetEntry("09:00 AM", "Work", "Project A", "2024-04-28"),
-            TimeSheetEntry("10:30 AM", "Meeting", "Team meeting", "2024-04-28"),
-            TimeSheetEntry("01:00 PM", "Lunch", "Lunch break", "2024-04-28")
-        )
-
-        // Create and set adapter with dummy entries list
-        val adapter = EntryAdapter(dummyEntriesList)
-        recyclerView.adapter = adapter
+        val listView: ListView = findViewById(R.id.entries_list_view)
+        val adapter = EntryAdapter(this, entries)
+        listView.adapter = adapter
     }
 
     @SuppressLint("Range")
@@ -40,15 +34,23 @@ class ListView : AppCompatActivity() {
         val entries = mutableListOf<TimeSheetEntry>()
 
         val db = DBClass(applicationContext).readableDatabase
-        val query = "SELECT * FROM ${DBClass.TABLE_ENTRIES}"
+        val query1 = ("SELECT email FROM user_logged")
+        val userCursor = db.rawQuery(query1, null)
+        var email: String = ""
+        if(userCursor.moveToFirst()){
+            val index = userCursor.getColumnIndex("email")
+            email = userCursor.getString(index)
+        }
+        userCursor.close()
+        val query = "SELECT * FROM entries WHERE email = '$email'"
         db.rawQuery(query, null).use { cursor ->
             while (cursor.moveToNext()) {
-                val startTime = cursor.getString(cursor.getColumnIndex(DBClass.TIME_ENTRY))
+                val time = cursor.getString(cursor.getColumnIndex(DBClass.TIME_ENTRY))
                 val category = cursor.getString(cursor.getColumnIndex(DBClass.CATEGORY_ENTRY))
                 val description = cursor.getString(cursor.getColumnIndex(DBClass.DESCRIPTION_ENTRY))
                 val date = cursor.getString(cursor.getColumnIndex(DBClass.DATE_ENTRY))
 
-                val entry = TimeSheetEntry(startTime, category, description, date)
+                val entry = TimeSheetEntry(time, category, description, date)
                 entries.add(entry)
             }
         }
@@ -61,48 +63,38 @@ class ListView : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
+        menuInflater.inflate(R.menu.entry_menu, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+    private fun onMenuItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.menu_item1 -> {
-                startActivity(Intent(this, TimeEntry::class.java))
-                return true
+                startActivity(Intent(this, TotalHours::class.java))
+                true
             }
-
             R.id.menu_item2 -> {
-                startActivity(Intent(this,TotalHours::class.java))
-                return true
-            }
-
-            R.id.menu_item3 -> {
                 startActivity(Intent(this, Goal::class.java))
-                return true
+                true
             }
-
-            R.id.menu_item4 -> {
+            R.id.menu_item3 -> {
                 startActivity(Intent(this, Homepage::class.java))
-                return true
+                true
             }
-
+            R.id.menu_item4 -> {
+                startActivity(Intent(this, TimeEntry::class.java))
+                true
+            }
             R.id.menu_item5 -> {
+                val query = "DROP TABLE IF EXISTS user_logged"
+                val query1 = "CREATE TABLE user_logged (email TEXT PRIMARY KEY)"
+                db.rawQuery(query, null)
+                db.rawQuery(query1, null)
                 startActivity(Intent(this, Login::class.java))
-                return true
+                true
             }
-
-            R.id.menu_item6 -> {
-                startActivity(Intent(this, ListView::class.java))
-                return true
-            }
-
-            R.id.menu_item7 -> {
-                // Handle Logout
-                return true
-            }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
 }

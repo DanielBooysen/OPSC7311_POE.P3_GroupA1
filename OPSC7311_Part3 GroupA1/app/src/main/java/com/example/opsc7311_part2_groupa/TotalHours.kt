@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.TextView
@@ -15,6 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class TotalHours : AppCompatActivity() {
+    val db = DBClass(applicationContext).readableDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -22,31 +26,65 @@ class TotalHours : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        ViewCompat.setOnApplyWindowInsetsListener(window.decorView.rootView) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        // Fetch categories from the database
+        val query = ("SELECT category FROM categories")
+        val categoryCursor = db.rawQuery(query, null)
+        val categories: MutableList<String> = mutableListOf()
+        if(categoryCursor.moveToFirst()){
+            val index = categoryCursor.getColumnIndex("category")
+            if(index != -1){
+                do {
+                    val category = categoryCursor.getString(index)
+                    categories.add(category)
+                }while(categoryCursor.moveToNext())
+            }
         }
-        // Get start and end dates from intent or wherever they're set
-        val startDate = intent.getStringExtra("START_DATE")
-        val endDate = intent.getStringExtra("END_DATE")
+        categoryCursor.close()
 
-        // Fetch total hours data from the database
-        val totalHoursByCategory = DBClass(this).getTotalHoursByCategory(startDate, endDate)
-
-        // Get the LinearLayout to dynamically add TextViews
-        val layout = findViewById<LinearLayout>(R.id.linearLayout)
-
-        // Loop through the retrieved data and dynamically add TextViews for each category
-        for ((category, totalHours) in totalHoursByCategory) {
-            val textView = TextView(this)
-            textView.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            textView.text = "$category: $totalHours hours"
-            layout.addView(textView)
+        val query1 = ("SELECT email FROM user_logged")
+        val userCursor = db.rawQuery(query1, null)
+        var email: String = ""
+        if(userCursor.moveToFirst()){
+            val index = userCursor.getColumnIndex("email")
+            email = userCursor.getString(index)
         }
+        userCursor.close()
+
+        val categoryTimeMap = mutableMapOf<String, Int>()
+
+        for(category in categories){
+            val entryQuery = "SELECT time FROM entries WHERE category = ? AND email = ?"
+            val entryCursor = db.rawQuery(entryQuery, arrayOf(category, email))
+
+            var totalMinutes = 0
+            if (entryCursor.moveToFirst()) {
+                val index = entryCursor.getColumnIndex("time")
+                do {
+                    val timeEntry = entryCursor.getString(index)
+                    val parts = timeEntry.split(":")
+                    val hours = parts[0].toInt()
+                    val minutes = parts[1].toInt()
+                    totalMinutes += hours * 60 + minutes
+                } while (entryCursor.moveToNext())
+            }
+            entryCursor.close()
+
+            categoryTimeMap[category] = totalMinutes
+        }
+
+        val categoryDisplayList = mutableListOf<String>()
+
+        for ((category, totalMinutes) in categoryTimeMap) {
+            val hours = totalMinutes / 60
+            val minutes = totalMinutes % 60
+            val displayTime = "$hours:$minutes"
+            val display = "$category: $displayTime"
+            categoryDisplayList.add(display)
+        }
+
+        val listView: ListView = findViewById(R.id.total_hours)
+        val adapter = CategoryAdapter(this, categoryDisplayList)
+        listView.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -55,28 +93,36 @@ class TotalHours : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_item13 -> {
+        return onMenuItemSelected(item)
+    }
+
+    private fun onMenuItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item1 -> {
                 startActivity(Intent(this, TimeEntry::class.java))
-                return true
+                true
             }
-
-            R.id.menu_item14 -> {
+            R.id.menu_item2 -> {
+                startActivity(Intent(this, Entries::class.java))
+                true
+            }
+            R.id.menu_item3 -> {
                 startActivity(Intent(this, Goal::class.java))
-                return true
+                true
             }
-
-            R.id.menu_item15 -> {
+            R.id.menu_item4 -> {
                 startActivity(Intent(this, Homepage::class.java))
-                return true
+                true
             }
-
-            R.id.menu_item16 -> {
-                startActivity(Intent(this, ListView::class.java))
-                return true
+            R.id.menu_item5 -> {
+                val query = "DROP TABLE IF EXISTS user_logged"
+                val query1 = "CREATE TABLE user_logged (email TEXT PRIMARY KEY)"
+                db.rawQuery(query, null)
+                db.rawQuery(query1, null)
+                startActivity(Intent(this, Login::class.java))
+                true
             }
-
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

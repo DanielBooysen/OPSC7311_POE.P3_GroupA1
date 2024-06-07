@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -46,7 +45,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text="Homepage"
+                        android:text="Entries"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -59,61 +58,14 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <ImageView
-            android:id="@+id/imageView4"
+        <ListView
+            android:id="@+id/entries_list_view"
             android:layout_width="match_parent"
-            android:layout_height="620dp"
-            android:contentDescription="welcome image"
-            app:srcCompat="@drawable/welcome2" />
-
-        <TextView
-            android:id="@+id/txt1"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/want_to_logout"
-            android:textColor="@color/baby_blue"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/click_here"
-            android:textColor="@color/baby_blue"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp"
+            android:padding="16dp" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:ignore="UseCompoundDrawables">
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="40dp"
-            android:fontFamily="cursive"
-            android:gravity="center"
-            android:text="@string/welcome"
-            android:textAlignment="center"
-            android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/username"
-            android:textAlignment="center"
-            android:textSize="23sp"
-            android:textStyle="bold|italic" />
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_item8"
-        android:title="@string/homepage"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/menu_item10"
-        android:title="@string/goal"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/menu_item11"
+        android:id="@+id/menu_item1"
         android:title="@string/total_hours"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/menu_item12"
-        android:title="@string/logout"
+        android:id="@+id/menu_item2"
+        android:title="@string/goal"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/menu_item13"
-        android:title="@string/list_view"
+        android:id="@+id/menu_item3"
+        android:title="@string/homepage"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_item4"
+        android:title="@string/entries"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_item5"
+        android:title="@string/logout"
         app:showAsAction="never"/>
 </menu>

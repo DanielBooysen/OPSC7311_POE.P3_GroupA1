@@ -44,7 +44,7 @@
     <string name="view_photo">View Photo</string>
     <string name="date">Date:</string>
     <string name="description">Description</string>
-    <string name="list_view">List View</string>
+    <string name="entries">Entries</string>
     <string name="category_name">Category Name</string>
     <string name="totalhours">Total Hours</string>
     <string name="add_photo_click">Add a Photo</string>
@@ -53,4 +53,6 @@
     <string name="starttime">Start Time</string>
     <string name="description_description">Description</string>
     <string name="selected_date_format">%d-%02d-%02d</string>
+    <string name="start">Start</string>
+    <string name="timer_default">00:00</string>
 </resources>

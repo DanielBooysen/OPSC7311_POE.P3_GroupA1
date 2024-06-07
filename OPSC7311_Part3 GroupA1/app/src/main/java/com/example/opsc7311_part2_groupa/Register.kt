@@ -28,15 +28,11 @@ class Register : AppCompatActivity() {
                 data.put("email", binding.email.text.toString())
                 data.put("password", binding.Password.text.toString())
                 val rs:Long = db.insert("user", null, data)
+                db.insert("user", null, data)
                 if(!rs.equals(-1)){
-                    val ad = AlertDialog.Builder(this)
-                    ad.setTitle("Message")
-                    ad.setMessage("Account has been registered successfully")
-                    ad.setPositiveButton("Ok", null)
-                    ad.show()
-                    binding.username.text.clear()
-                    binding.email.text.clear()
-                    binding.Password.text.clear()
+                    val query1 = "INSERT INTO user_logged (email) VALUES('$email')"
+                    db.rawQuery(query1, null)
+                    db.close()
                     val intent = Intent(this,Homepage::class.java)
                     startActivity(intent)
                 }else{

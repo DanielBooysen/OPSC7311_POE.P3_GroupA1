@@ -27,7 +27,7 @@
 
         <!-- Other activities in the application -->
         <activity android:name=".TotalHours" android:exported="false" />
-        <activity android:name=".ListView" android:exported="false" />
+        <activity android:name=".Entries" android:exported="false" />
         <activity android:name=".TimeSheetEntry" android:exported="false" />
         <activity android:name=".Goal" android:exported="true" />
         <activity android:name=".TimeEntry" android:exported="true" />

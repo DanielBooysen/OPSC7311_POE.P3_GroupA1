@@ -14,6 +14,7 @@ import com.example.opsc7311_part2_groupa.DBClass.Companion.DATE_GOAL
 import com.example.opsc7311_part2_groupa.DBClass.Companion.MAX_HOURS
 import com.example.opsc7311_part2_groupa.DBClass.Companion.MIN_HOURS
 import com.example.opsc7311_part2_groupa.DBClass.Companion.TABLE_GOALS
+import kotlin.math.E
 
 
 class Goal : AppCompatActivity() {
@@ -92,22 +93,35 @@ class Goal : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_item5 -> {
+    private fun onMenuItemSelected(item: MenuItem): Boolean {
+        val dbhelp = DBClass(applicationContext)
+        val db = dbhelp.writableDatabase
+        return when (item.itemId) {
+            R.id.menu_item1 -> {
                 startActivity(Intent(this, TimeEntry::class.java))
-                return true
+                true
             }
-            R.id.menu_item6 -> {
+            R.id.menu_item2 -> {
                 startActivity(Intent(this, Homepage::class.java))
-                return true
+                true
             }
-
-            R.id.menu_item8 -> {
+            R.id.menu_item3 -> {
+                startActivity(Intent(this, TotalHours::class.java))
+                true
+            }
+            R.id.menu_item4 -> {
+                startActivity(Intent(this, Entries::class.java))
+                true
+            }
+            R.id.menu_item5 -> {
+                val query = "DROP TABLE IF EXISTS user_logged"
+                val query1 = "CREATE TABLE user_logged (email TEXT PRIMARY KEY)"
+                db.rawQuery(query, null)
+                db.rawQuery(query1, null)
                 startActivity(Intent(this, Login::class.java))
-                return true
+                true
             }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 }
