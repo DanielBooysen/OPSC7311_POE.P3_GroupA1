@@ -67,6 +67,10 @@ class Entries : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return onMenuItemSelected(item)
+    }
+
     private fun onMenuItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_item1 -> {

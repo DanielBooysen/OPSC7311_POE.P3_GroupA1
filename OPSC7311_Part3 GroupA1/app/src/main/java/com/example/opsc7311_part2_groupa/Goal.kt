@@ -93,6 +93,10 @@ class Goal : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return onMenuItemSelected(item)
+    }
+
     private fun onMenuItemSelected(item: MenuItem): Boolean {
         val dbhelp = DBClass(applicationContext)
         val db = dbhelp.writableDatabase
