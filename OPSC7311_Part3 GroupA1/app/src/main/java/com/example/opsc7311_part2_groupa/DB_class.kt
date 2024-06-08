@@ -59,17 +59,19 @@ class DBClass(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
                 + "FOREIGN KEY(" + CATEGORY_ENTRY + ") REFERENCES " + TABLE_CATEGORIES + "(" + CATEGORY + ")"+ ")")
         db?.execSQL(timeEntries)
 
-        val goalsTable = ("CREATE TABLE " + TABLE_GOALS + "("
-                + DATE_GOAL + " TEXT,"
-                + KEY_MAIL + " TEXT,"
-                + MIN_HOURS + " REAL,"
-                + MAX_HOURS + " REAL"
-                + "FOREIGN KEY(" + KEY_MAIL + ") REFERENCES " + TABLE_CONTACTS + "(" + KEY_MAIL + ")" + ")")
+        val goalsTable = ("CREATE TABLE " + TABLE_GOALS + " ("
+                + DATE_GOAL + " TEXT, "
+                + KEY_MAIL + " TEXT, "
+                + MIN_HOURS + " REAL, "
+                + MAX_HOURS + " REAL, "
+                + "FOREIGN KEY(" + KEY_MAIL + ") REFERENCES " + TABLE_CONTACTS + "(" + KEY_MAIL + ")"
+                + ")")
         db?.execSQL(goalsTable)
 
-        val userLoggedTable = ("CREATE TABLE " + TABLE_USER_LOGGED + "("
-                + USER_LOGGED_EMAIL + " TEXT PRIMARY KEY"
-                + "FOREIGN KEY(" + KEY_MAIL + ") REFERENCES " + TABLE_CONTACTS + "(" + KEY_MAIL + ")" + ")")
+        val userLoggedTable = ("CREATE TABLE " + TABLE_USER_LOGGED + " ("
+                + USER_LOGGED_EMAIL + " TEXT PRIMARY KEY, "
+                + "FOREIGN KEY(" + USER_LOGGED_EMAIL + ") REFERENCES " + TABLE_CONTACTS + "(" + KEY_MAIL + ")"
+                + ")")
         db?.execSQL(userLoggedTable)
     }
 
