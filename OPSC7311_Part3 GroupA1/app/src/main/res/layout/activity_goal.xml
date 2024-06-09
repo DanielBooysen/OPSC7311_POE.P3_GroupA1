@@ -4,46 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/GoalConstraint"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".Goal">
 
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#FFEB3B">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical">
-
-                <ImageView
-                    android:id="@+id/logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="-84dp"
-                    android:src="@drawable/epocharchitect_modified"
-                    android:clickable="true"
-                    android:focusable="true" />
-
-                <TextView
-                    android:id="@+id/toolbar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="Goals"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="60dp"
+            android:background="#FFEB3B"
+            app:layout_scrollFlags="enterAlways|scroll"
+            app:logo="@drawable/epocharchitect_modified"
+            app:title="Daily Goals"
+            app:titleTextColor="@color/black">
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -51,17 +34,18 @@
 
     <LinearLayout
         android:id="@+id/GoalLayout"
-        android:layout_width="409dp"
-        android:layout_height="642dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         app:layout_constraintVertical_bias="0.333">
 
         <LinearLayout
             android:id="@+id/AddGoalLayout"
             android:layout_width="match_parent"
-            android:layout_height="374dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -84,7 +68,7 @@
                 <EditText
                     android:id="@+id/addDate"
                     android:layout_width="match_parent"
-                    android:layout_height="59dp"
+                    android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/goal_date"
                     android:inputType="date" />
@@ -104,7 +88,7 @@
                 <EditText
                     android:id="@+id/addMinGoal"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/goal_min"
                     android:inputType="number" />
@@ -119,12 +103,12 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/MaxTil"
                 android:layout_width="match_parent"
-                android:layout_height="78dp">
+                android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/editTextNumber"
                     android:layout_width="match_parent"
-                    android:layout_height="61dp"
+                    android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/goal_max"
                     android:inputType="number" />
@@ -133,7 +117,7 @@
             <Button
                 android:id="@+id/addButton"
                 android:layout_width="match_parent"
-                android:layout_height="69dp"
+                android:layout_height="wrap_content"
                 android:text="@string/add_goal_click" />
 
         </LinearLayout>
@@ -141,13 +125,13 @@
         <TextView
             android:id="@+id/textView8"
             android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_height="wrap_content"
             android:text="@string/view_goal" />
 
         <ListView
             android:id="@+id/GoalList"
             android:layout_width="match_parent"
-            android:layout_height="232dp" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

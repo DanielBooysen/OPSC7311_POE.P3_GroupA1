@@ -12,29 +12,32 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ListView
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-
 import androidx.appcompat.app.AlertDialog
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import android.database.sqlite.SQLiteDatabase
 
 class TimeEntry : AppCompatActivity() {
-    private var hours = arrayOf(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23)
-    private var minutes = arrayOf(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59)
+    private var hours = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)
+    private var minutes = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59)
     private var selectedImageUri: Uri? = null
     private var timerRunning = false
     private var timer: CountDownTimer? = null
     private var elapsedTime: Long = 0
-    val dbhelp = DBClass(applicationContext)
-    var dbw = dbhelp.writableDatabase
-    val dbr = dbhelp.readableDatabase
+    private lateinit var dbhelp: DBClass
+    private lateinit var dbw: SQLiteDatabase
+    private lateinit var dbr: SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_entry)
+
+        dbhelp = DBClass(applicationContext)
+        dbw = dbhelp.writableDatabase
+        dbr = dbhelp.readableDatabase
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -49,7 +52,7 @@ class TimeEntry : AppCompatActivity() {
             }
         }
 
-        //Get all saved gategories to display for user selection
+        // Get all saved categories to display for user selection
         val getCategoriesQuery = "SELECT * FROM categories"
         val catResult = dbr.rawQuery(getCategoriesQuery, null)
 
@@ -70,31 +73,30 @@ class TimeEntry : AppCompatActivity() {
             Toast.makeText(this, "Categories empty", Toast.LENGTH_SHORT).show()
         }
 
-        //Creates a popup window to input a new category and save it to the database
+        // Creates a popup window to input a new category and save it to the database
         val categoryButton = findViewById<Button>(R.id.addCategory)
         categoryButton.setOnClickListener {
             val builder: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
             builder.setTitle("Enter the category!")
 
             val input = EditText(this)
-            input.setInputType(InputType.TYPE_CLASS_TEXT)
+            input.inputType = InputType.TYPE_CLASS_TEXT
             builder.setView(input)
 
-            builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
-                categories.add(input.getText().toString())
+            builder.setPositiveButton("OK") { dialog, which ->
+                categories.add(input.text.toString())
                 val data = ContentValues()
-                data.put("category", input.getText().toString())
+                data.put("category", input.text.toString())
                 dbw.insert("categories", null, data)
-            })
-            builder.setNegativeButton("Cancel",
-                DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
+            }
+            builder.setNegativeButton("Cancel") { dialog, which -> dialog.cancel() }
 
             builder.show()
         }
 
         val categoriesSpinner = findViewById<Spinner>(R.id.categoryPicker)
 
-        //Add categories to the spinner for display
+        // Add categories to the spinner for display
         val categoryAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, categories)
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categoriesSpinner.adapter = categoryAdapter
@@ -104,7 +106,7 @@ class TimeEntry : AppCompatActivity() {
         val startMinuteSpinner = findViewById<Spinner>(R.id.minuteStart)
         val endMinuteSpinner = findViewById<Spinner>(R.id.minuteEnd)
 
-        //Adapters to display the time entry options for users
+        // Adapters to display the time entry options for users
         val hourAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, hours)
         val minuteAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, minutes)
         startHourSpinner.adapter = hourAdapter
@@ -116,11 +118,11 @@ class TimeEntry : AppCompatActivity() {
         val descriptionView = findViewById<TextView>(R.id.descriptionView)
         val dateView = findViewById<TextView>(R.id.dateView)
 
-        //calculates the time spent on a category and saves it to the database
+        // Calculates the time spent on a category and saves it to the database
         val submitEntry = findViewById<Button>(R.id.submitTimeEntry)
         submitEntry.setOnClickListener {
 
-            if(workTimeDisplay.text.equals("@string/work_time")){
+            if (workTimeDisplay.text == "@string/work_time") {
                 val startHour = startHourSpinner.selectedItem.toString().toInt()
                 val endHour = endHourSpinner.selectedItem.toString().toInt()
                 val startMinute = startMinuteSpinner.selectedItem.toString().toInt()
@@ -140,10 +142,10 @@ class TimeEntry : AppCompatActivity() {
 
                 workTimeDisplay.text = workTime
 
-                val query1 = ("SELECT email FROM user_logged")
+                val query1 = "SELECT email FROM user_logged"
                 val userCursor = dbr.rawQuery(query1, null)
-                var email: String = ""
-                if(userCursor.moveToFirst()){
+                var email = ""
+                if (userCursor.moveToFirst()) {
                     val index = userCursor.getColumnIndex("email")
                     email = userCursor.getString(index)
                 }
@@ -157,7 +159,7 @@ class TimeEntry : AppCompatActivity() {
                 data.put("date", date)
                 val insert: Long = dbw.insert("entries", null, data)
 
-                if(!insert.equals(-1)){
+                if (insert != -1L) {
                     val ad = AlertDialog.Builder(this)
                     ad.setTitle("Message")
                     ad.setMessage("Success")
@@ -166,16 +168,16 @@ class TimeEntry : AppCompatActivity() {
                 }
 
                 setContentView(R.layout.item_timesheet_entry)
-            }else{
+            } else {
                 val categoryChosen = categoriesSpinner.selectedItem.toString()
                 val date = dateView.text.toString()
                 val description = descriptionView.text.toString()
                 val workTime = workTimeDisplay.text.toString()
 
-                val query1 = ("SELECT email FROM user_logged")
+                val query1 = "SELECT email FROM user_logged"
                 val userCursor = dbr.rawQuery(query1, null)
-                var email: String = ""
-                if(userCursor.moveToFirst()){
+                var email = ""
+                if (userCursor.moveToFirst()) {
                     val index = userCursor.getColumnIndex("email")
                     email = userCursor.getString(index)
                 }
@@ -189,7 +191,7 @@ class TimeEntry : AppCompatActivity() {
                 data.put("date", date)
                 val insert: Long = dbw.insert("entries", null, data)
 
-                if(!insert.equals(-1)){
+                if (insert != -1L) {
                     val ad = AlertDialog.Builder(this)
                     ad.setTitle("Message")
                     ad.setMessage("Success")
@@ -200,6 +202,7 @@ class TimeEntry : AppCompatActivity() {
                 setContentView(R.layout.item_timesheet_entry)
             }
         }
+
         // Photo button click listener
         val photoButton = findViewById<Button>(R.id.photoButton)
         photoButton.setOnClickListener {
@@ -208,6 +211,7 @@ class TimeEntry : AppCompatActivity() {
             startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
         }
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.time_entrymenu, menu)
         return true
@@ -236,10 +240,8 @@ class TimeEntry : AppCompatActivity() {
                 true
             }
             R.id.menu_item5 -> {
-                val query = "DROP TABLE IF EXISTS user_logged"
-                val query1 = "CREATE TABLE user_logged (email TEXT PRIMARY KEY)"
-                dbw.rawQuery(query, null)
-                dbw.rawQuery(query1, null)
+                dbw.execSQL("DROP TABLE IF EXISTS user_logged")
+                dbw.execSQL("CREATE TABLE user_logged (email TEXT PRIMARY KEY)")
                 startActivity(Intent(this, Login::class.java))
                 true
             }
@@ -299,6 +301,3 @@ class TimeEntry : AppCompatActivity() {
         stopTimer()
     }
 }
-
-
-
