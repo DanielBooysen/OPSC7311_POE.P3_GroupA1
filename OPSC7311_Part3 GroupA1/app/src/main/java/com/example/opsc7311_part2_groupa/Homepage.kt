@@ -1,6 +1,7 @@
 package com.example.opsc7311_part2_groupa
 
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,7 +15,7 @@ import com.example.opsc7311_part2_groupa.databinding.ActivityHomepageBinding
 
 class Homepage : AppCompatActivity() {
     private lateinit var bind: ActivityHomepageBinding
-    val db = DBClass(applicationContext).readableDatabase
+    private lateinit var db: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,14 +23,25 @@ class Homepage : AppCompatActivity() {
         bind = ActivityHomepageBinding.inflate(layoutInflater)
         setContentView(bind.root)
 
+        // Move database initialization to a background thread
+        Thread {
+            db = DBClass(applicationContext).readableDatabase
+            runOnUiThread {
+                setupUI()
+            }
+        }.start()
+    }
+
+    private fun setupUI() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         val query = "SELECT email FROM user_logged"
         val value = db.rawQuery(query, null)
-        if(value != null){
-            bind.username.setText(value.getString(1))
+        if (value.moveToFirst()) {
+            bind.username.setText(value.getString(0))
         }
+        value.close()
 
         bind.logout.setOnClickListener {
             startActivity(Intent(this, Login::class.java))
@@ -68,10 +80,8 @@ class Homepage : AppCompatActivity() {
                 true
             }
             R.id.menu_item5 -> {
-                val query = "DROP TABLE IF EXISTS user_logged"
-                val query1 = "CREATE TABLE user_logged (email TEXT PRIMARY KEY)"
-                db.rawQuery(query, null)
-                db.rawQuery(query1, null)
+                db.execSQL("DROP TABLE IF EXISTS user_logged")
+                db.execSQL("CREATE TABLE user_logged (email TEXT PRIMARY KEY)")
                 startActivity(Intent(this, Login::class.java))
                 true
             }
