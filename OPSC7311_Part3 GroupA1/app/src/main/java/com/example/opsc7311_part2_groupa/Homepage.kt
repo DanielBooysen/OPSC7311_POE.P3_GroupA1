@@ -44,6 +44,8 @@ class Homepage : AppCompatActivity() {
         value.close()
 
         bind.logout.setOnClickListener {
+            db.execSQL("DROP TABLE IF EXISTS user_logged")
+            db.execSQL("CREATE TABLE user_logged (email TEXT PRIMARY KEY)")
             startActivity(Intent(this, Login::class.java))
         }
 

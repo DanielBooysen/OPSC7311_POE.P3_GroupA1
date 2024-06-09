@@ -79,16 +79,7 @@ class Goal : AppCompatActivity() {
         val dbhelp = DBClass(applicationContext)
         val db = dbhelp.readableDatabase
 
-        val query1 = ("SELECT email FROM user_logged")
-        val userCursor = db.rawQuery(query1, null)
-        var email: String = ""
-        if(userCursor.moveToFirst()){
-            val index = userCursor.getColumnIndex("email")
-            email = userCursor.getString(index)
-        }
-        userCursor.close()
-
-        val query = "SELECT * FROM $TABLE_GOALS WHERE email='$email'"
+        val query = "SELECT * FROM $TABLE_GOALS"
         val rs = db.rawQuery(query, null)
 
         if (rs.moveToFirst()) {
