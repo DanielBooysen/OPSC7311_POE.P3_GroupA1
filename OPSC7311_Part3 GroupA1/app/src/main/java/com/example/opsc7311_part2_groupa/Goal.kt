@@ -1,5 +1,6 @@
 package com.example.opsc7311_part2_groupa
 
+import android.util.Log
 import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -27,18 +28,26 @@ class Goal : AppCompatActivity() {
         binding = ActivityGoalBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.d("GOAL_DEBUG", "onCreate: Activity started")
+
         val toolbar: Toolbar = binding.toolbar
         setSupportActionBar(toolbar)
+
+        Log.d("GOAL_DEBUG", "onCreate: Toolbar set")
 
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, goals)
         binding.GoalList.adapter = adapter
 
+        Log.d("GOAL_DEBUG", "onCreate: Adapter set")
+
         binding.addButton.setOnClickListener {
+            Log.d("GOAL_DEBUG", "Add Button Clicked")
             val date = binding.addDate.text.toString()
             val minHours = binding.addMinGoal.text.toString().toFloatOrNull()
             val maxHours = binding.editTextNumber.text.toString().toFloatOrNull()
 
             if (date.isNotEmpty() && minHours != null && maxHours != null) {
+                Log.d("GOAL_DEBUG", "Valid input")
                 val dbhelp = DBClass(applicationContext)
                 val db = dbhelp.writableDatabase
 
@@ -49,12 +58,15 @@ class Goal : AppCompatActivity() {
 
                 val rs: Long = db.insert(TABLE_GOALS, null, data)
                 if (rs != -1L) {
+                    Log.d("GOAL_DEBUG", "Goal added to database")
                     goals.add("Date: $date, Minimum Hours: $minHours, Maximum Hours: $maxHours")
                     adapter.notifyDataSetChanged()
                 } else {
+                    Log.d("GOAL_DEBUG", "Failed to add goal to database")
                     Toast.makeText(this, "Failed to add goal", Toast.LENGTH_SHORT).show()
                 }
             } else {
+                Log.d("GOAL_DEBUG", "Invalid input")
                 Toast.makeText(this, "Please fill in all fields correctly", Toast.LENGTH_SHORT)
                     .show()
             }
@@ -63,13 +75,24 @@ class Goal : AppCompatActivity() {
     }
 
     private fun displayGoals() {
+        Log.d("GOAL_DEBUG", "displayGoals: Fetching goals from database")
         val dbhelp = DBClass(applicationContext)
         val db = dbhelp.readableDatabase
 
-        val query = "SELECT * FROM $TABLE_GOALS"
+        val query1 = ("SELECT email FROM user_logged")
+        val userCursor = db.rawQuery(query1, null)
+        var email: String = ""
+        if(userCursor.moveToFirst()){
+            val index = userCursor.getColumnIndex("email")
+            email = userCursor.getString(index)
+        }
+        userCursor.close()
+
+        val query = "SELECT * FROM $TABLE_GOALS WHERE email='$email'"
         val rs = db.rawQuery(query, null)
 
         if (rs.moveToFirst()) {
+            Log.d("GOAL_DEBUG", "displayGoals: Goals found in database")
             val dateIndex = rs.getColumnIndex(DATE_GOAL)
             val minHoursIndex = rs.getColumnIndex(MIN_HOURS)
             val maxHoursIndex = rs.getColumnIndex(MAX_HOURS)
@@ -82,22 +105,28 @@ class Goal : AppCompatActivity() {
                     goals.add("Date: $date, Minimum Hours: $minHours, Maximum Hours: $maxHours")
                 } while (rs.moveToNext())
             } else {
+                Log.d("GOAL_DEBUG", "displayGoals: Columns not found in database")
             }
+        } else {
+            Log.d("GOAL_DEBUG", "displayGoals: No goals found in database")
         }
         rs.close()
         adapter.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        Log.d("GOAL_DEBUG", "onCreateOptionsMenu: Creating menu")
         menuInflater.inflate(R.menu.goal_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d("GOAL_DEBUG", "onOptionsItemSelected: Menu item selected ${item.itemId}")
         return onMenuItemSelected(item)
     }
 
     private fun onMenuItemSelected(item: MenuItem): Boolean {
+        Log.d("GOAL_DEBUG", "onMenuItemSelected: Handling menu item ${item.itemId}")
         val dbhelp = DBClass(applicationContext)
         val db = dbhelp.writableDatabase
         return when (item.itemId) {
