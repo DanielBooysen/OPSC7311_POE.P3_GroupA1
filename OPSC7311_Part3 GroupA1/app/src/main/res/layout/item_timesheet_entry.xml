@@ -7,31 +7,6 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="409dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="2dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="413dp"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="60dp"
-            android:background="#FFEB3B"
-            app:layout_scrollFlags="enterAlways|scroll"
-            app:logo="@drawable/epocharchitect_modified"
-            app:title="List View"
-            app:titleTextColor="@color/black">
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
     <TextView
         android:id="@+id/textStartTime"
         android:layout_width="match_parent"

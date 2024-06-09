@@ -63,12 +63,12 @@ class DBClass(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
                 + DATE_GOAL + " TEXT,"
                 + KEY_MAIL + " TEXT,"
                 + MIN_HOURS + " REAL,"
-                + MAX_HOURS + " REAL"
+                + MAX_HOURS + " REAL,"
                 + "FOREIGN KEY(" + KEY_MAIL + ") REFERENCES " + TABLE_CONTACTS + "(" + KEY_MAIL + ")" + ")")
         db?.execSQL(goalsTable)
 
         val userLoggedTable = ("CREATE TABLE " + TABLE_USER_LOGGED + "("
-                + USER_LOGGED_EMAIL + " TEXT PRIMARY KEY"
+                + USER_LOGGED_EMAIL + " TEXT PRIMARY KEY,"
                 + "FOREIGN KEY(" + KEY_MAIL + ") REFERENCES " + TABLE_CONTACTS + "(" + KEY_MAIL + ")" + ")")
         db?.execSQL(userLoggedTable)
     }

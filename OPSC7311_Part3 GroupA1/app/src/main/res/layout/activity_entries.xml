@@ -4,7 +4,7 @@
     android:id="@+id/main"
     android:layout_width="393dp"
     android:layout_height="807dp"
-    tools:context=".Homepage"
+    tools:context=".Entries"
     android:orientation="vertical">
 
     <LinearLayout
