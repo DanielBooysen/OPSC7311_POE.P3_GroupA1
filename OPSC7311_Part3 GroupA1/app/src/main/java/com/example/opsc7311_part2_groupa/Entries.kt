@@ -103,6 +103,14 @@ class Entries : AppCompatActivity() {
                 true
             }
             R.id.menu_item5 -> {
+                startActivity(Intent(this, Graphs::class.java))
+                true
+            }
+            R.id.menu_item6 -> {
+                startActivity(Intent(this, Task::class.java))
+                true
+            }
+            R.id.menu_item7 -> {
                 val query = "DROP TABLE IF EXISTS user_logged"
                 val query1 = "CREATE TABLE user_logged (email TEXT PRIMARY KEY)"
                 db.rawQuery(query, null)

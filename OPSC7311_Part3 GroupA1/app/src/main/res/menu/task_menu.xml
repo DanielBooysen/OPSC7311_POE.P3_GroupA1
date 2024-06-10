@@ -4,15 +4,15 @@
 
     <item
         android:id="@+id/menu_item1"
-        android:title="@string/total_hours"
+        android:title="@string/time_entry"
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_item2"
-        android:title="@string/goal"
+        android:title="@string/homepage"
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_item3"
-        android:title="@string/homepage"
+        android:title="@string/total_hours"
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_item4"
@@ -20,7 +20,7 @@
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_item5"
-        android:title="@string/graphs"
+        android:title="@string/goal"
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_item6"
