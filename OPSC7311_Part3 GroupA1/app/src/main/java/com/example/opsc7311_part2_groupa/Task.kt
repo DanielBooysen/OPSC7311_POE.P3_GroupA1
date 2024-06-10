@@ -6,15 +6,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.opsc7311_part2_groupa.databinding.ActivityTaskBinding
-import java.text.SimpleDateFormat
-import java.util.*
 
 class Task : AppCompatActivity() {
     private lateinit var binding: ActivityTaskBinding
@@ -117,52 +112,6 @@ class Task : AppCompatActivity() {
                 true
             }
             R.id.menu_item5 -> {
-                dbw.execSQL("DROP TABLE IF EXISTS user_logged")
-                dbw.execSQL("CREATE TABLE user_logged (email TEXT PRIMARY KEY)")
-                startActivity(Intent(this, Login::class.java))
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.time_entrymenu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return onMenuItemSelected(item)
-    }
-
-    private fun onMenuItemSelected(item: MenuItem): Boolean {
-        val dbw = db.writableDatabase
-        return when (item.itemId) {
-            R.id.menu_item1 -> {
-                startActivity(Intent(this, TimeEntry::class.java))
-                true
-            }
-            R.id.menu_item2 -> {
-                startActivity(Intent(this, Homepage::class.java))
-                true
-            }
-            R.id.menu_item3 -> {
-                startActivity(Intent(this, TotalHours::class.java))
-                true
-            }
-            R.id.menu_item4 -> {
-                startActivity(Intent(this, Entries::class.java))
-                true
-            }
-            R.id.menu_item5 -> {
-                startActivity(Intent(this, Goal::class.java))
-                true
-            }
-            R.id.menu_item6 -> {
-                startActivity(Intent(this, Graphs::class.java))
-                true
-            }
-            R.id.menu_item7 -> {
                 dbw.execSQL("DROP TABLE IF EXISTS user_logged")
                 dbw.execSQL("CREATE TABLE user_logged (email TEXT PRIMARY KEY)")
                 startActivity(Intent(this, Login::class.java))

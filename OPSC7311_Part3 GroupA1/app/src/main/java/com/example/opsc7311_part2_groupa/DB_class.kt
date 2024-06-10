@@ -62,7 +62,7 @@ class DBClass(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
                 + KEY_MAIL + " TEXT,"
                 + DATE_ENTRY + " TEXT,"
                 + DESCRIPTION_ENTRY + " TEXT,"
-                + "FOREIGN KEY(" + KEY_MAIL + ") REFERENCES " + TABLE_CONTACTS + "(" + KEY_MAIL + "),"
+                + "FOREIGN KEY(" + KEY_MAIL + ") REFERENCES " + TABLE_CONTACTS + "(" + KEY_MAIL + ")"
                 + "FOREIGN KEY(" + CATEGORY_ENTRY + ") REFERENCES " + TABLE_CATEGORIES + "(" + CATEGORY + ")"+ ")")
         db?.execSQL(timeEntries)
 
@@ -85,7 +85,7 @@ class DBClass(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
                 + TASK_NAME + " TEXT, "
                 + SUB_TASK_NAME + " TEXT, "
                 + TASK_DATE + " TEXT, "
-                + TASK_HOURS + " REAL"
+                + TASK_HOURS + " REAL "
                 + ")")
         db?.execSQL(tasksTable)
     }
@@ -123,4 +123,29 @@ class DBClass(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
         db.close()
         return totalHoursByCategory
     }
+
+    fun getTotalHoursByDay(startDate: String?, endDate: String?): Map<String, Double> {
+        val totalHoursByDay = mutableMapOf<String, Double>()
+        val db = readableDatabase
+        val query =
+            "SELECT $DATE_ENTRY, SUM($TIME_ENTRY) AS total_hours FROM $TABLE_ENTRIES " +
+                    "WHERE $DATE_ENTRY BETWEEN '$startDate' AND '$endDate' " +
+                    "GROUP BY $DATE_ENTRY"
+        val cursor = db.rawQuery(query, null)
+        if (cursor.moveToFirst()) {
+            val dateIndex = cursor.getColumnIndex(DATE_ENTRY)
+            val totalHoursIndex = cursor.getColumnIndex("total_hours")
+            if (dateIndex != -1 && totalHoursIndex != -1) {
+                do {
+                    val date = cursor.getString(dateIndex)
+                    val totalHours = cursor.getDouble(totalHoursIndex)
+                    totalHoursByDay[date] = totalHours
+                } while (cursor.moveToNext())
+            }
+        }
+        cursor.close()
+        db.close()
+        return totalHoursByDay
+    }
+
 }
