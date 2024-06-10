@@ -24,7 +24,7 @@
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_item6"
-        android:title="@string/tasks"
+        android:title="@string/graphs"
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_item7"
