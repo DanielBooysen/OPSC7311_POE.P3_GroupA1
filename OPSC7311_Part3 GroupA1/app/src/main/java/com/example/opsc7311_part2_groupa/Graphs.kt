@@ -26,7 +26,7 @@ class Graphs : AppCompatActivity() {
     private fun showPopupMenu(view: View) {
         val popupMenu = PopupMenu(this, view)
         val inflater: MenuInflater = popupMenu.menuInflater
-        inflater.inflate(R.menu.main_menu, popupMenu.menu)
+        inflater.inflate(R.menu.graphs_menu, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener { item ->
             onMenuItemSelected(item)
         }
