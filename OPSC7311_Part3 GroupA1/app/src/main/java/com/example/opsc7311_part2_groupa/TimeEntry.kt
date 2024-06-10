@@ -1,5 +1,6 @@
 package com.example.opsc7311_part2_groupa
 
+import android.app.DatePickerDialog
 import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.Intent
@@ -19,6 +20,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.database.sqlite.SQLiteDatabase
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class TimeEntry : AppCompatActivity() {
     private val hours = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)
@@ -33,6 +37,8 @@ class TimeEntry : AppCompatActivity() {
     private lateinit var dbr: SQLiteDatabase
     private var timerHour: Long = 0
     private var timerMinute: Long = 0
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private lateinit var dateView: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,7 +127,9 @@ class TimeEntry : AppCompatActivity() {
 
         val workTimeDisplay = findViewById<TextView>(R.id.workTimeView)
         val descriptionView = findViewById<TextView>(R.id.descriptionView)
-        val dateView = findViewById<TextView>(R.id.dateView)
+        dateView = findViewById(R.id.date)
+
+        dateView.setOnClickListener{ showDatePickerDialog(dateView)}
 
         // Calculates the time spent on a category and saves it to the database
         val submitEntry = findViewById<Button>(R.id.submitTimeEntry)
@@ -301,5 +309,20 @@ class TimeEntry : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         stopTimer()
+    }
+
+    private fun showDatePickerDialog(editText: EditText) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            val selectedDate = Calendar.getInstance()
+            selectedDate.set(selectedYear, selectedMonth, selectedDay)
+            editText.setText(dateFormat.format(selectedDate.time))
+        }, year, month, day)
+
+        datePickerDialog.show()
     }
 }
