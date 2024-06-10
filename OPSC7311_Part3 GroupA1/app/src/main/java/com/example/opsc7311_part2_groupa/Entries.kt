@@ -9,13 +9,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ListView
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 class Entries : AppCompatActivity() {
-    val db = DBClass(applicationContext).readableDatabase
-    @SuppressLint("MissingInflatedId")
+    private val db by lazy { DBClass(applicationContext).readableDatabase }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_entries)
@@ -42,7 +40,6 @@ class Entries : AppCompatActivity() {
 
         Log.d("ENTRY_DEBUG", "getTimesheetEntriesFromDatabase: Fetching email")
 
-        val db = DBClass(applicationContext).readableDatabase
         val query1 = ("SELECT email FROM user_logged")
         val userCursor = db.rawQuery(query1, null)
         var email: String = ""
@@ -68,7 +65,6 @@ class Entries : AppCompatActivity() {
                 Log.d("ENTRY_DEBUG", "getTimesheetEntriesFromDatabase: Retrieved entry $entry")
             }
         }
-        db.close()
 
         // Log the number of retrieved entries
         Log.d("ENTRY_DEBUG", "getTimesheetEntriesFromDatabase: Number of entries: ${entries.size}")
