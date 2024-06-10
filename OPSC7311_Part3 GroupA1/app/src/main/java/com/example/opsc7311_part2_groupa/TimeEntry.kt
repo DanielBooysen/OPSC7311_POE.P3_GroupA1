@@ -30,6 +30,7 @@ class TimeEntry : AppCompatActivity() {
     private lateinit var dbhelp: DBClass
     private lateinit var dbw: SQLiteDatabase
     private lateinit var dbr: SQLiteDatabase
+    private lateinit var workTimeView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +43,9 @@ class TimeEntry : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val startStopButton = findViewById<Button>(R.id.startStopButton)
+        workTimeView = findViewById(R.id.workTimeView)
 
+        val startStopButton = findViewById<Button>(R.id.startStopButton)
         startStopButton.setOnClickListener {
             if (timerRunning) {
                 stopTimer()
@@ -55,7 +57,6 @@ class TimeEntry : AppCompatActivity() {
         // Get all saved categories to display for user selection
         val getCategoriesQuery = "SELECT * FROM categories"
         val catResult = dbr.rawQuery(getCategoriesQuery, null)
-
         val categories = mutableListOf<String>("Select option")
 
         if (catResult != null && catResult.moveToFirst()) {
@@ -114,15 +115,13 @@ class TimeEntry : AppCompatActivity() {
         startMinuteSpinner.adapter = minuteAdapter
         endMinuteSpinner.adapter = minuteAdapter
 
-        val workTimeDisplay = findViewById<TextView>(R.id.workTimeView)
         val descriptionView = findViewById<TextView>(R.id.descriptionView)
         val dateView = findViewById<TextView>(R.id.dateView)
 
         // Calculates the time spent on a category and saves it to the database
         val submitEntry = findViewById<Button>(R.id.submitTimeEntry)
         submitEntry.setOnClickListener {
-
-            if (workTimeDisplay.text == "@string/work_time") {
+            if (workTimeView.text == "@string/work_time") {
                 val startHour = startHourSpinner.selectedItem.toString().toInt()
                 val endHour = endHourSpinner.selectedItem.toString().toInt()
                 val startMinute = startMinuteSpinner.selectedItem.toString().toInt()
@@ -139,8 +138,7 @@ class TimeEntry : AppCompatActivity() {
                 val workMinute = totalTime % 60
 
                 val workTime = "$workHour:$workMinute"
-
-                workTimeDisplay.text = workTime
+                workTimeView.text = workTime
 
                 val query1 = "SELECT email FROM user_logged"
                 val userCursor = dbr.rawQuery(query1, null)
@@ -167,12 +165,12 @@ class TimeEntry : AppCompatActivity() {
                     ad.show()
                 }
 
-                setContentView(R.layout.activity_entries)
+                setContentView(R.layout.item_timesheet_entry)
             } else {
                 val categoryChosen = categoriesSpinner.selectedItem.toString()
                 val date = dateView.text.toString()
                 val description = descriptionView.text.toString()
-                val workTime = workTimeDisplay.text.toString()
+                val workTime = workTimeView.text.toString()
 
                 val query1 = "SELECT email FROM user_logged"
                 val userCursor = dbr.rawQuery(query1, null)
@@ -199,7 +197,7 @@ class TimeEntry : AppCompatActivity() {
                     ad.show()
                 }
 
-                setContentView(R.layout.activity_entries)
+                setContentView(R.layout.item_timesheet_entry)
             }
         }
 
@@ -283,7 +281,6 @@ class TimeEntry : AppCompatActivity() {
         val hours = (elapsedTime / 60000) / 60
         val minutes = (elapsedTime / 60000) % 60
 
-        val workTimeView = findViewById<TextView>(R.id.workTimeView)
         workTimeView.text = String.format("%02d:%02d", hours, minutes)
     }
 
