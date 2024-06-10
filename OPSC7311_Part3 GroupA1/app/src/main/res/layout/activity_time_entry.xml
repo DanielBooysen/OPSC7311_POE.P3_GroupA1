@@ -28,10 +28,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="-84dp"
-                    android:src="@drawable/epocharchitect_modified"
                     android:clickable="true"
+                    android:contentDescription="@string/logo"
                     android:focusable="true"
-                    android:contentDescription="@string/logo" />
+                    android:src="@drawable/epocharchitect_modified" />
 
                 <TextView
                     android:id="@+id/toolbar_title"
@@ -209,16 +209,18 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/dateView"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginEnd="188dp"
-        android:layout_marginBottom="217dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="30/04/2024"
+        android:id="@+id/date"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="293dp"
+        android:layout_marginBottom="214dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="false"
+        android:inputType="none"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView7"
@@ -238,8 +240,8 @@
         android:layout_marginEnd="186dp"
         android:layout_marginBottom="377dp"
         android:ems="10"
+        android:hint="Description"
         android:inputType="text"
-        android:text="Description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
