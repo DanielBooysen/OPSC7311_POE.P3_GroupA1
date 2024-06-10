@@ -8,19 +8,19 @@
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_item2"
-        android:title="@string/entries"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/menu_item3"
-        android:title="@string/goal"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/menu_item4"
         android:title="@string/homepage"
         app:showAsAction="never"/>
     <item
+        android:id="@+id/menu_item3"
+        android:title="@string/total_hours"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_item4"
+        android:title="@string/entries"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/menu_item5"
-        android:title="@string/graphs"
+        android:title="@string/goal"
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_item6"

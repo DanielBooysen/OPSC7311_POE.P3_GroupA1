@@ -20,6 +20,10 @@
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_item5"
+        android:title="@string/graphs"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_item6"
         android:title="@string/logout"
         app:showAsAction="never"/>
 

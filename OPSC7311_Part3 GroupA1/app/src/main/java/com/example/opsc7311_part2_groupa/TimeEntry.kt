@@ -249,6 +249,10 @@ class TimeEntry : AppCompatActivity() {
                 true
             }
             R.id.menu_item5 -> {
+                startActivity(Intent(this, Graphs::class.java))
+                true
+            }
+            R.id.menu_item6 -> {
                 dbw.execSQL("DROP TABLE IF EXISTS user_logged")
                 dbw.execSQL("CREATE TABLE user_logged (email TEXT PRIMARY KEY)")
                 startActivity(Intent(this, Login::class.java))
