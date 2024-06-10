@@ -25,4 +25,3 @@ androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-

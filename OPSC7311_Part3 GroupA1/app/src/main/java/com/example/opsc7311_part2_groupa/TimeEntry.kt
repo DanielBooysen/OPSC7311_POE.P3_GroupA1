@@ -21,15 +21,18 @@ import androidx.appcompat.widget.Toolbar
 import android.database.sqlite.SQLiteDatabase
 
 class TimeEntry : AppCompatActivity() {
-    private var hours = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)
-    private var minutes = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59)
+    private val hours = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23)
+    private val minutes = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59)
     private var selectedImageUri: Uri? = null
     private var timerRunning = false
+    private var timerRan = false
     private var timer: CountDownTimer? = null
     private var elapsedTime: Long = 0
     private lateinit var dbhelp: DBClass
     private lateinit var dbw: SQLiteDatabase
     private lateinit var dbr: SQLiteDatabase
+    private var timerHour: Long = 0
+    private var timerMinute: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +50,10 @@ class TimeEntry : AppCompatActivity() {
         startStopButton.setOnClickListener {
             if (timerRunning) {
                 stopTimer()
+                startStopButton.text = "Start"
             } else {
                 startTimer()
+                startStopButton.text = "Stop"
             }
         }
 
@@ -122,7 +127,7 @@ class TimeEntry : AppCompatActivity() {
         val submitEntry = findViewById<Button>(R.id.submitTimeEntry)
         submitEntry.setOnClickListener {
 
-            if (workTimeDisplay.text == "@string/work_time") {
+            if (timerRan == false) {
                 val startHour = startHourSpinner.selectedItem.toString().toInt()
                 val endHour = endHourSpinner.selectedItem.toString().toInt()
                 val startMinute = startMinuteSpinner.selectedItem.toString().toInt()
@@ -166,13 +171,11 @@ class TimeEntry : AppCompatActivity() {
                     ad.setPositiveButton("Ok", null)
                     ad.show()
                 }
-
-                setContentView(R.layout.activity_entries)
             } else {
                 val categoryChosen = categoriesSpinner.selectedItem.toString()
                 val date = dateView.text.toString()
                 val description = descriptionView.text.toString()
-                val workTime = workTimeDisplay.text.toString()
+                val workTime = "$timerHour:$timerMinute"
 
                 val query1 = "SELECT email FROM user_logged"
                 val userCursor = dbr.rawQuery(query1, null)
@@ -198,8 +201,6 @@ class TimeEntry : AppCompatActivity() {
                     ad.setPositiveButton("Ok", null)
                     ad.show()
                 }
-
-                setContentView(R.layout.activity_entries)
             }
         }
 
@@ -261,6 +262,7 @@ class TimeEntry : AppCompatActivity() {
     }
 
     private fun startTimer() {
+        timerRan = true
         timer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 elapsedTime = Long.MAX_VALUE - millisUntilFinished
@@ -280,11 +282,8 @@ class TimeEntry : AppCompatActivity() {
         timer?.cancel()
         timerRunning = false
 
-        val hours = (elapsedTime / 60000) / 60
-        val minutes = (elapsedTime / 60000) % 60
-
-        val workTimeView = findViewById<TextView>(R.id.workTimeView)
-        workTimeView.text = String.format("%02d:%02d", hours, minutes)
+        timerHour = (elapsedTime / 60000) / 60
+        timerMinute = (elapsedTime / 60000) % 60
     }
 
     private fun updateTimerDisplay() {
