@@ -100,11 +100,11 @@ class Task : AppCompatActivity() {
                 true
             }
             R.id.menu_item2 -> {
-                startActivity(Intent(this, Goal::class.java))
+                startActivity(Intent(this, Homepage::class.java))
                 true
             }
             R.id.menu_item3 -> {
-                startActivity(Intent(this, Homepage::class.java))
+                startActivity(Intent(this, TotalHours::class.java))
                 true
             }
             R.id.menu_item4 -> {
@@ -112,6 +112,14 @@ class Task : AppCompatActivity() {
                 true
             }
             R.id.menu_item5 -> {
+                startActivity(Intent(this, Goal::class.java))
+                true
+            }
+            R.id.menu_item6 -> {
+                startActivity(Intent(this, Graphs::class.java))
+                true
+            }
+            R.id.menu_item7 -> {
                 dbw.execSQL("DROP TABLE IF EXISTS user_logged")
                 dbw.execSQL("CREATE TABLE user_logged (email TEXT PRIMARY KEY)")
                 startActivity(Intent(this, Login::class.java))
