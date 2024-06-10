@@ -46,6 +46,9 @@ class TimeEntry : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val startStopButton = findViewById<Button>(R.id.startStopButton)
+        val workTimeDisplay = findViewById<TextView>(R.id.workTimeView)
+        val descriptionView = findViewById<TextView>(R.id.descriptionView)
+        val dateView = findViewById<TextView>(R.id.dateView)
 
         startStopButton.setOnClickListener {
             if (timerRunning) {
@@ -119,15 +122,11 @@ class TimeEntry : AppCompatActivity() {
         startMinuteSpinner.adapter = minuteAdapter
         endMinuteSpinner.adapter = minuteAdapter
 
-        val workTimeDisplay = findViewById<TextView>(R.id.workTimeView)
-        val descriptionView = findViewById<TextView>(R.id.descriptionView)
-        val dateView = findViewById<TextView>(R.id.dateView)
-
         // Calculates the time spent on a category and saves it to the database
         val submitEntry = findViewById<Button>(R.id.submitTimeEntry)
         submitEntry.setOnClickListener {
 
-            if (timerRan == false) {
+            if (!timerRan) {
                 val startHour = startHourSpinner.selectedItem.toString().toInt()
                 val endHour = endHourSpinner.selectedItem.toString().toInt()
                 val startMinute = startMinuteSpinner.selectedItem.toString().toInt()
@@ -144,17 +143,9 @@ class TimeEntry : AppCompatActivity() {
                 val workMinute = totalTime % 60
 
                 val workTime = "$workHour:$workMinute"
-
                 workTimeDisplay.text = workTime
 
-                val query1 = "SELECT email FROM user_logged"
-                val userCursor = dbr.rawQuery(query1, null)
-                var email = ""
-                if (userCursor.moveToFirst()) {
-                    val index = userCursor.getColumnIndex("email")
-                    email = userCursor.getString(index)
-                }
-                userCursor.close()
+                val email = getLoggedInUserEmail()
 
                 val data = ContentValues()
                 data.put("time", workTime)
@@ -177,14 +168,7 @@ class TimeEntry : AppCompatActivity() {
                 val description = descriptionView.text.toString()
                 val workTime = "$timerHour:$timerMinute"
 
-                val query1 = "SELECT email FROM user_logged"
-                val userCursor = dbr.rawQuery(query1, null)
-                var email = ""
-                if (userCursor.moveToFirst()) {
-                    val index = userCursor.getColumnIndex("email")
-                    email = userCursor.getString(index)
-                }
-                userCursor.close()
+                val email = getLoggedInUserEmail()
 
                 val data = ContentValues()
                 data.put("time", workTime)
@@ -296,6 +280,18 @@ class TimeEntry : AppCompatActivity() {
 
         val timerTextView = findViewById<TextView>(R.id.timerTextView)
         timerTextView.text = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+    }
+
+    private fun getLoggedInUserEmail(): String {
+        val query = "SELECT email FROM user_logged"
+        val userCursor = dbr.rawQuery(query, null)
+        var email = ""
+        if (userCursor.moveToFirst()) {
+            val index = userCursor.getColumnIndex("email")
+            email = userCursor.getString(index)
+        }
+        userCursor.close()
+        return email
     }
 
     override fun onStop() {

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
@@ -25,6 +26,7 @@ class TotalHours : AppCompatActivity() {
     private lateinit var adapter: ArrayAdapter<String>
     private val categoryDisplayList = mutableListOf<String>()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private val TAG = "TotalHours"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +70,9 @@ class TotalHours : AppCompatActivity() {
         val start = startDate.text.toString()
         val end = endDate.text.toString()
 
+        Log.d(TAG, "Start date: $start")
+        Log.d(TAG, "End date: $end")
+
         if (start.isEmpty() || end.isEmpty()) {
             Toast.makeText(this, "Please select both start and end dates", Toast.LENGTH_SHORT).show()
             return
@@ -81,6 +86,7 @@ class TotalHours : AppCompatActivity() {
 
         for (category in categories) {
             val entryQuery = "SELECT time FROM entries WHERE category = ? AND email = ? AND date BETWEEN ? AND ?"
+            Log.d(TAG, "Executing query: $entryQuery with params: category=$category, email=$userEmail, start=$start, end=$end")
             val entryCursor = db.rawQuery(entryQuery, arrayOf(category, userEmail, start, end))
 
             var totalMinutes = 0
@@ -88,11 +94,18 @@ class TotalHours : AppCompatActivity() {
                 val index = entryCursor.getColumnIndex("time")
                 do {
                     val timeEntry = entryCursor.getString(index)
+                    Log.d(TAG, "Retrieved time entry: $timeEntry")
                     val parts = timeEntry.split(":")
-                    val hours = parts[0].toInt()
-                    val minutes = parts[1].toInt()
-                    totalMinutes += hours * 60 + minutes
+                    if (parts.size == 2) {
+                        val hours = parts[0].toInt()
+                        val minutes = parts[1].toInt()
+                        totalMinutes += hours * 60 + minutes
+                    } else {
+                        Log.d(TAG, "Time entry format incorrect: $timeEntry")
+                    }
                 } while (entryCursor.moveToNext())
+            } else {
+                Log.d(TAG, "No entries found for category=$category, email=$userEmail, start=$start, end=$end")
             }
             entryCursor.close()
 
@@ -107,13 +120,16 @@ class TotalHours : AppCompatActivity() {
             val displayTime = String.format("%02d:%02d", hours, minutes)
             val display = "$category: $displayTime"
             categoryDisplayList.add(display)
+            Log.d(TAG, "Category: $category, Total time: $displayTime")
         }
 
         adapter.notifyDataSetChanged()
+        Log.d(TAG, "Updated category display list: $categoryDisplayList")
     }
 
     private fun getCategories(): List<String> {
         val query = "SELECT category FROM categories"
+        Log.d(TAG, "Executing query: $query")
         val categoryCursor = db.rawQuery(query, null)
         val categories = mutableListOf<String>()
 
@@ -127,11 +143,13 @@ class TotalHours : AppCompatActivity() {
             }
         }
         categoryCursor.close()
+        Log.d(TAG, "Retrieved categories: $categories")
         return categories
     }
 
     private fun getLoggedInUserEmail(): String {
         val query = "SELECT email FROM user_logged"
+        Log.d(TAG, "Executing query: $query")
         val userCursor = db.rawQuery(query, null)
         var email = ""
         if (userCursor.moveToFirst()) {
@@ -139,6 +157,7 @@ class TotalHours : AppCompatActivity() {
             email = userCursor.getString(index)
         }
         userCursor.close()
+        Log.d(TAG, "Retrieved logged in user email: $email")
         return email
     }
 
