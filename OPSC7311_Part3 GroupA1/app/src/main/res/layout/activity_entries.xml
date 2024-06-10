@@ -38,7 +38,8 @@
                         android:layout_marginStart="-84dp"
                         android:src="@drawable/epocharchitect_modified"
                         android:clickable="true"
-                        android:focusable="true" />
+                        android:focusable="true"
+                        android:contentDescription="@string/logo" />
 
                     <TextView
                         android:id="@+id/toolbar_title"
