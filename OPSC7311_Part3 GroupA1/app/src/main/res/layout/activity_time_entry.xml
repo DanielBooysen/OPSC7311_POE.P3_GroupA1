@@ -7,41 +7,6 @@
     tools:context=".TimeEntry"
     tools:ignore="VisualLintBounds">
 
-    <Button
-        android:id="@+id/startStopButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginEnd="153dp"
-        android:layout_marginBottom="30dp"
-        android:text="@string/start"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/timerTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/startStopButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="167dp"
-        android:layout_marginBottom="27dp"
-        android:text="@string/timer_default"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/startStopButton"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Spinner
-        android:id="@+id/hourStart"
-        android:layout_width="109dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="286dp"
-        android:layout_marginBottom="130dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,6 +47,41 @@
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <Button
+        android:id="@+id/startStopButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="153dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/start"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/startStopButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="167dp"
+        android:layout_marginBottom="27dp"
+        android:text="@string/timer_default"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/startStopButton"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Spinner
+        android:id="@+id/hourStart"
+        android:layout_width="109dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="286dp"
+        android:layout_marginBottom="130dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/submitTimeEntry"

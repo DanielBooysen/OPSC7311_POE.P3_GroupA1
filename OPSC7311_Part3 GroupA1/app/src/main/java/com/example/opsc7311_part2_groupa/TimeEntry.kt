@@ -167,7 +167,7 @@ class TimeEntry : AppCompatActivity() {
                     ad.show()
                 }
 
-                setContentView(R.layout.item_timesheet_entry)
+                setContentView(R.layout.activity_entries)
             } else {
                 val categoryChosen = categoriesSpinner.selectedItem.toString()
                 val date = dateView.text.toString()
@@ -199,7 +199,7 @@ class TimeEntry : AppCompatActivity() {
                     ad.show()
                 }
 
-                setContentView(R.layout.item_timesheet_entry)
+                setContentView(R.layout.activity_entries)
             }
         }
 
