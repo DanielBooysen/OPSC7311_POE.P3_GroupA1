@@ -36,6 +36,13 @@ class DBClass(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
         // UserLogged Table
         const val TABLE_USER_LOGGED = "user_logged"
         const val USER_LOGGED_EMAIL = "email"
+
+        // Tasks Table
+        const val TABLE_TASKS = "tasks"
+        const val TASK_NAME = "task_name"
+        const val SUB_TASK_NAME = "sub_task_name"
+        const val TASK_DATE = "task_date"
+        const val TASK_HOURS = "task_hours"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -73,6 +80,14 @@ class DBClass(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
                 + "FOREIGN KEY(" + USER_LOGGED_EMAIL + ") REFERENCES " + TABLE_CONTACTS + "(" + KEY_MAIL + ")"
                 + ")")
         db?.execSQL(userLoggedTable)
+
+        val tasksTable = ("CREATE TABLE " + TABLE_TASKS + " ("
+                + TASK_NAME + " TEXT, "
+                + SUB_TASK_NAME + " TEXT, "
+                + TASK_DATE + " TEXT, "
+                + TASK_HOURS + " REAL "
+                + ")")
+        db?.execSQL(tasksTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -81,6 +96,7 @@ class DBClass(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USER_LOGGED")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_CONTACTS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_CATEGORIES")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_TASKS")
         onCreate(db)
     }
 
