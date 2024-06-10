@@ -107,4 +107,29 @@ class DBClass(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
         db.close()
         return totalHoursByCategory
     }
+
+    fun getTotalHoursByDay(startDate: String?, endDate: String?): Map<String, Double> {
+        val totalHoursByDay = mutableMapOf<String, Double>()
+        val db = readableDatabase
+        val query =
+            "SELECT $DATE_ENTRY, SUM($TIME_ENTRY) AS total_hours FROM $TABLE_ENTRIES " +
+                    "WHERE $DATE_ENTRY BETWEEN '$startDate' AND '$endDate' " +
+                    "GROUP BY $DATE_ENTRY"
+        val cursor = db.rawQuery(query, null)
+        if (cursor.moveToFirst()) {
+            val dateIndex = cursor.getColumnIndex(DATE_ENTRY)
+            val totalHoursIndex = cursor.getColumnIndex("total_hours")
+            if (dateIndex != -1 && totalHoursIndex != -1) {
+                do {
+                    val date = cursor.getString(dateIndex)
+                    val totalHours = cursor.getDouble(totalHoursIndex)
+                    totalHoursByDay[date] = totalHours
+                } while (cursor.moveToNext())
+            }
+        }
+        cursor.close()
+        db.close()
+        return totalHoursByDay
+    }
+
 }

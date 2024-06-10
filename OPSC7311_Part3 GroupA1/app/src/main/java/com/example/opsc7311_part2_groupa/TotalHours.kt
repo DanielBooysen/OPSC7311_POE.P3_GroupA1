@@ -193,6 +193,10 @@ class TotalHours : AppCompatActivity() {
                 true
             }
             R.id.menu_item6 -> {
+                startActivity(Intent(this, Task::class.java))
+                true
+            }
+            R.id.menu_item7 -> {
                 db.execSQL("DROP TABLE IF EXISTS user_logged")
                 db.execSQL("CREATE TABLE user_logged (email TEXT PRIMARY KEY)")
                 startActivity(Intent(this, Login::class.java))
