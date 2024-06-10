@@ -135,7 +135,7 @@ class TimeEntry : AppCompatActivity() {
         val submitEntry = findViewById<Button>(R.id.submitTimeEntry)
         submitEntry.setOnClickListener {
 
-            if (timerRan == false) {
+            if (!timerRan) {
                 val startHour = startHourSpinner.selectedItem.toString().toInt()
                 val endHour = endHourSpinner.selectedItem.toString().toInt()
                 val startMinute = startMinuteSpinner.selectedItem.toString().toInt()
