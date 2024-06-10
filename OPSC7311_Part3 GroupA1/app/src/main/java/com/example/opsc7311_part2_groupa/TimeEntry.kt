@@ -284,6 +284,9 @@ class TimeEntry : AppCompatActivity() {
 
         timerHour = (elapsedTime / 60000) / 60
         timerMinute = (elapsedTime / 60000) % 60
+
+        val workTimeDisplay = findViewById<TextView>(R.id.workTimeView)
+        workTimeDisplay.text = "$timerHour:$timerMinute"
     }
 
     private fun updateTimerDisplay() {
