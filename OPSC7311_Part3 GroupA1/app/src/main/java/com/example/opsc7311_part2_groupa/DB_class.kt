@@ -147,5 +147,4 @@ class DBClass(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null,
         db.close()
         return totalHoursByDay
     }
-
 }
